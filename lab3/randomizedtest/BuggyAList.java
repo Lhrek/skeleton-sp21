@@ -61,6 +61,7 @@ public class BuggyAList<Item> {
     public Item removeLast() {
         if ((size < items.length / 4) && (size > 4)) {
             resize(size / 4);
+//            resize(items.length);
         }
         Item x = getLast();
         items[size - 1] = null;

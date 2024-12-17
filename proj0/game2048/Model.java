@@ -6,6 +6,7 @@ import java.util.Observable;
 
 /** The state of a game of 2048.
  *  @author TODO: YOUR NAME HERE
+ *  GanZJ
  */
 public class Model extends Observable {
     /** Current contents of the board. */
@@ -113,7 +114,16 @@ public class Model extends Observable {
         // TODO: Modify this.board (and perhaps this.score) to account
         // for the tilt to the Side SIDE. If the board changed, set the
         // changed local variable to true.
-
+        for(int i = 0;i< board.size();i++){
+            for (int j =0;j< board.size();j++){
+                Tile t = board.tile(i,j);
+                if(board.tile(i,j) !=null){
+                    board.move(2,j,t);
+                    changed = true;
+                    score +=7;
+                }
+            }
+        }
         checkGameOver();
         if (changed) {
             setChanged();
@@ -137,8 +147,16 @@ public class Model extends Observable {
      *  Empty spaces are stored as null.
      * */
     public static boolean emptySpaceExists(Board b) {
-        // TODO: Fill in this function.
-        return false;
+        boolean ans = false;
+        int size = b.size();
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                if(b.tile(i,j)==null){
+                    ans = true;
+                }
+            }
+        }
+        return ans;
     }
 
     /**
@@ -147,8 +165,16 @@ public class Model extends Observable {
      * given a Tile object t, we get its value with t.value().
      */
     public static boolean maxTileExists(Board b) {
-        // TODO: Fill in this function.
-        return false;
+        boolean ans = false;
+        int size = b.size();
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                if (b.tile(i,j) != null && b.tile(i,j).value() == MAX_PIECE) {
+                    ans = true;
+                }
+            }
+        }
+        return ans;
     }
 
     /**
@@ -158,7 +184,19 @@ public class Model extends Observable {
      * 2. There are two adjacent tiles with the same value.
      */
     public static boolean atLeastOneMoveExists(Board b) {
-        // TODO: Fill in this function.
+        boolean ans = false;
+        int size = b.size();
+        if (emptySpaceExists(b))
+            return true;
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                //相邻图块的判断，向右、向下
+                if ((j + 1 < size) && b.tile(i, j).value() == b.tile(i, j + 1).value())
+                    return true;
+                if ((i + 1 < size) && b.tile(i, j).value() == b.tile(i + 1, j).value())
+                    return true;
+            }
+        }
         return false;
     }
 
